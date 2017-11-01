@@ -60,10 +60,24 @@
 <script>
   window.addEventListener('keydown', function(e) {
     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
     if(!audio) return; // It will not display error for those keyCode which are not defined in above audio; hence to avoid it reading property of null
+
+    key.classList.add('playing'); // We have different css for playing class so we are using Vanilla JS to add class
     audio.currentTime = 0; // It will change the time to 0, hence no asynchronous issues
     audio.play(); // It will play the audio
+    // key.addClass('playing'); // This is jquery command to add class
   });
+
+  function removeTransition(e) {
+    // console.log(e);
+    if(e.propertyName !== 'transform') return;
+    // console.log(this);
+    e.target.classList.remove('playing');
+  }
+
+  const keys = document.querySelectorAll(`.keys`);
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
 </script>
 
 
